@@ -6,7 +6,7 @@
 /*   By: mpimenta <mpimenta@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:47:48 by mpimenta          #+#    #+#             */
-/*   Updated: 2022/07/03 21:05:09 by mpimenta         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:55:37 by mpimenta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ char	*ft_strchr(const char *s, int c)
 	return (str);
 }
 
-static char	ft_cleaning_read_line(char *line)
+static char	*ft_cleaning_read_line(char *line)
 {
-	int	i;
-	int	j;
-	char	line_ret;
+	int		i;
+	int		j;
+	char	*line_ret;
 
 	i = 0;
 	j = 0;
@@ -48,9 +48,7 @@ static char	ft_cleaning_read_line(char *line)
 		return (NULL);
 	while (line[i] != '\0')
 	{
-		line_ret[j] = line[i];
-		j++;
-		i++;
+		line_ret[j++] = line[++i];
 	}
 	line_ret[j + 1] = '\0';
 	free(line);
@@ -59,7 +57,7 @@ static char	ft_cleaning_read_line(char *line)
 
 static char	*ft_getting_line(char *line)
 {
-	char	ret;
+	char	*ret;
 	size_t	len;
 
 	if (!line)
@@ -67,30 +65,31 @@ static char	*ft_getting_line(char *line)
 	len = 0;
 	while (line[len] && line[len] != '\n')
 		len++;
-	ret = malloc(sizeof(char) * (len + 2));
+	ret = malloc(sizeof(char) * (len + 1));
 	if (!ret)
 		return (NULL);
 	ft_strlcpy(ret, line, len + 1);
 	if (line[len] == '\n')
-		ret[len + 1] = '\n';
-	ret[len] = '\0';
+		ret[len] = '\n';
+	ret[len + 1] = '\0';
 	return (ret);
 }
 
 static char	*ft_reading_line(int fd, char *line)
 {
-	int	doing;
+	int		doing;
 	char	*buffer;
 	char	*swap;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (NULL);
 	doing = 1;
 	while (doing != 0 && !ft_strchr(line, '\n'))
 	{
 		doing = read(fd, buffer, BUFFER_SIZE);
 		if (doing == -1)
 		{
-			free(line);
 			free(buffer);
 			return (0);
 		}
@@ -109,7 +108,7 @@ char	*get_next_line(int fd)
 	char		*ret;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
+		return (NULL);
 	if (!line)
 	{
 		line = malloc(sizeof(char));
@@ -117,7 +116,7 @@ char	*get_next_line(int fd)
 	}
 	line = ft_reading_line(fd, line);
 	if (!line)
-		return (0);
+		return (NULL);
 	ret = ft_getting_line(line);
 	line = ft_cleaning_read_line(line);
 	return (ret);

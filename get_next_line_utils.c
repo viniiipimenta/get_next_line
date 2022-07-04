@@ -6,7 +6,7 @@
 /*   By: mpimenta <mpimenta@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:16:45 by mpimenta          #+#    #+#             */
-/*   Updated: 2022/07/02 20:37:29 by mpimenta         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:33:36 by mpimenta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,22 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	return (ret);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*s3;
 	size_t	len_s1;
 	size_t	len_s2;
 
-	if (!s1 || !s2)
+	if (!s2)
 		return (0);
+	else if (!s1 && s2)
+	{
+		s3 = malloc(sizeof(char) * (ft_strlen(s2) + 1));
+		if (!s3)
+			return (NULL);
+		ft_strlcpy(s3, s2, ft_strlen(s2) + 1);
+		return (s3);
+	}
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	s3 = malloc(sizeof(char) * (len_s1 + len_s2));
