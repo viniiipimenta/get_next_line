@@ -5,28 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpimenta <mpimenta@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 13:47:48 by mpimenta          #+#    #+#             */
-/*   Updated: 2022/07/04 11:55:37 by mpimenta         ###   ########.fr       */
+/*   Created: 2022/07/05 17:56:50 by mpimenta          #+#    #+#             */
+/*   Updated: 2022/07/05 18:31:46 by mpimenta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strchr(const char *s, int c)
-{
-	char	*str;
-	char	looking;
-
-	looking = (char) c;
-	str = (char *)s;
-	while (*str != looking)
-	{
-		if (*str == '\0' && looking != '\0')
-			return (NULL);
-		str++;
-	}
-	return (str);
-}
 
 static char	*ft_cleaning_read_line(char *line)
 {
@@ -43,14 +27,14 @@ static char	*ft_cleaning_read_line(char *line)
 		free(line);
 		return (NULL);
 	}
-	line_ret = malloc(sizeof(char) * (ft_strlen(line) - i + 1));
+	line_ret = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1));
 	if (!line_ret)
 		return (NULL);
 	while (line[i] != '\0')
 	{
 		line_ret[j++] = line[++i];
 	}
-	line_ret[j + 1] = '\0';
+	line_ret[j] = '\0';
 	free(line);
 	return (line_ret);
 }
@@ -60,12 +44,12 @@ static char	*ft_getting_line(char *line)
 	char	*ret;
 	size_t	len;
 
-	if (!line)
+	if (!*line)
 		return (NULL);
 	len = 0;
 	while (line[len] && line[len] != '\n')
 		len++;
-	ret = malloc(sizeof(char) * (len + 1));
+	ret = malloc(sizeof(char) * (len + 2));
 	if (!ret)
 		return (NULL);
 	ft_strlcpy(ret, line, len + 1);
@@ -79,7 +63,6 @@ static char	*ft_reading_line(int fd, char *line)
 {
 	int		doing;
 	char	*buffer;
-	char	*swap;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
@@ -94,9 +77,7 @@ static char	*ft_reading_line(int fd, char *line)
 			return (0);
 		}
 		buffer[doing] = '\0';
-		swap = line;
-		line = ft_strjoin(swap, buffer);
-		free(swap);
+		line = ft_strjoin(line, buffer);
 	}
 	free(buffer);
 	return (line);
