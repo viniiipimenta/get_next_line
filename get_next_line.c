@@ -6,7 +6,7 @@
 /*   By: mpimenta <mpimenta@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:56:50 by mpimenta          #+#    #+#             */
-/*   Updated: 2022/07/05 18:31:46 by mpimenta         ###   ########.fr       */
+/*   Updated: 2022/07/06 10:31:39 by mpimenta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ static char	*ft_reading_line(int fd, char *line)
 			return (0);
 		}
 		buffer[doing] = '\0';
+		if (!line)
+		{
+			line = malloc(sizeof(char));
+			line[0] = '\0';
+		}
 		line = ft_strjoin(line, buffer);
 	}
 	free(buffer);
@@ -90,11 +95,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!line)
-	{
-		line = malloc(sizeof(char));
-		line[0] = '\0';
-	}
 	line = ft_reading_line(fd, line);
 	if (!line)
 		return (NULL);

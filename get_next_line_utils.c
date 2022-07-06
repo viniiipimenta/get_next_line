@@ -6,12 +6,11 @@
 /*   By: mpimenta <mpimenta@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 18:18:22 by mpimenta          #+#    #+#             */
-/*   Updated: 2022/07/05 18:27:31 by mpimenta         ###   ########.fr       */
+/*   Updated: 2022/07/06 10:06:54 by mpimenta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 size_t	ft_strlen(const char	*s)
 {
@@ -23,8 +22,7 @@ size_t	ft_strlen(const char	*s)
 	return (i);
 }
 
-
-char	*ft_strchr(const char	*s, int	c)
+char	*ft_strchr(const char *s, int c)
 {
 	int	i;
 
@@ -34,7 +32,7 @@ char	*ft_strchr(const char	*s, int	c)
 	while (s[i])
 	{
 		if (s[i] == (char) c)
-		return ((char *)&s[i]);
+			return ((char *)&s[i]);
 		i++;
 	}
 	return (NULL);
@@ -87,7 +85,6 @@ char	*ft_strjoin(char	*s1, char const	*s2)
 	free(s1);
 	return (str);
 }
-
 
 size_t	ft_strlcpy(char	*dest, const char	*src, size_t	size)
 {
